@@ -10,7 +10,7 @@ Provides extra user authentication options for Concrete5 CMS via Auth0.com (in b
    
 3. Add an entry to your database:
 
-        INSERT INTO AuthenticationTypes VALUES (NULL, auth0, Auth0, 1, 5, 0);
+        INSERT INTO AuthenticationTypes VALUES (NULL, 'auth0', 'Auth0', 1, 5, 0);
  
 4. A new authentication method will show up under Dashboard > Settings > Authentication.
 
