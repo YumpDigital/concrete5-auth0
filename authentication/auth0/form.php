@@ -30,6 +30,7 @@ if ($user->isLoggedIn()) { ?>
     // After login, should be directed to \URL::to('/ccm/system/authentication/oauth2/google/attempt_auth')
     ?>
 
+    <link rel="stylesheet" type="text/css" href="/application/authentication/auth0/login-screen.css">
     <div id="root" style="width: 280px; margin: 40px auto; padding: 10px; border-style: dashed; border-width: 1px;">
     embeded area
     </div>
