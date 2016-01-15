@@ -1,7 +1,7 @@
 # concrete5-auth0
 Provides extra user authentication options for Concrete5 CMS via Auth0.com (in beta)
 
-Instructions:
+### Instructions:
 
 1. Create an account with Auth0 and create a new application.
 
@@ -10,7 +10,7 @@ Instructions:
    
 3. Add an entry to your database:
 
-    INSERT INTO AuthenticationTypes VALUES (NULL, auth0, Auth0, 1, 5, 0);
+        INSERT INTO AuthenticationTypes VALUES (NULL, auth0, Auth0, 1, 5, 0);
  
 4. A new authentication method will show up under Dashboard > Settings > Authentication.
 
@@ -22,4 +22,4 @@ This is not fully complete and could use more testing and other improvements, bu
 
 Contact @SimoEast on Twitter
 
-This code (excluding the 'vendor' folder) is copyright published for research purposes only until released under an Open Source licence.
+This code (excluding the 'vendor' folder) is copyright and published for research purposes only until released under an Open Source licence.
