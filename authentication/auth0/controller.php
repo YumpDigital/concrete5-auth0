@@ -111,7 +111,7 @@ class Controller extends GenericOauth2TypeController
                 'client_id'     => \Config::get('auth.auth0.client_id'),
                 'client_secret' => \Config::get('auth.auth0.client_secret'),
                 'redirect_uri'  => (string) \URL::to('/ccm/system/authentication/oauth2/auth0/callback'),
-                'debug' => true,
+                // 'debug' => true,
             ));
             
             // Print out debug messages (when debug = true)
@@ -154,9 +154,9 @@ class Controller extends GenericOauth2TypeController
             if ($this->user) {
                 // User was authenticated via Auth0 successfully...
                 $user = $this->registerOrLoginUser($this->user);
-                d($user);
+                // d($user);
                 // Do final login steps and redirect user to home screen
-                // $this->completeAuthentication($user);
+                $this->completeAuthentication($user);
             } else { 
                 // TODO: Send an email to Yump team indicating a problem
                 // Redirect back to login page with the following message
