@@ -74,9 +74,10 @@ class Controller extends GenericOauth2TypeController
      * 
      * This setting can be modified from Dashboard > Settings
      * 
-     * @return [type] [description]
+     * @return int
      */
-    public function registrationGroupID() {
+    public function registrationGroupID() 
+    {
         return \Config::get('auth.auth0.registration_group');
     }
 
@@ -100,12 +101,9 @@ class Controller extends GenericOauth2TypeController
      */
     public function handle_authentication_callback()
     {
-        // ini_set('display_errors', true);
-        // error_reporting(E_ALL);
-        // echo(\URL::to('/ccm/system/authentication/oauth2/auth0/callback'));
         try {
-            // throw new \Exception('oops');
             
+            // Setup the Auth0 API object with settings stored in the CMS
             $auth0 = new \Auth0\SDK\Auth0(array(
                 'domain'        => \Config::get('auth.auth0.domain'),
                 'client_id'     => \Config::get('auth.auth0.client_id'),
@@ -117,7 +115,9 @@ class Controller extends GenericOauth2TypeController
             // Print out debug messages (when debug = true)
             $auth0->setDebugger(function($message){
                 echo "Auth0: $message<br>";
-            })->setDebugMode(true);
+            })
+            // ->setDebugMode(true)
+            ;
             
             $this->user = $auth0->getUser();
             
@@ -143,7 +143,9 @@ class Controller extends GenericOauth2TypeController
 
             //     [updated_at] => 2016-01-15T01:00:59.553Z
             //     [created_at] => 2016-01-14T07:58:27.945Z
-            //     [name] => simon@xxxxxxxx.com.au
+            //     [name] => simon@xxxxxxxx.com.au (or a full name if that is present in database)
+            //     [given_name] => John
+            //     [family_name] => Citizen
             //     [last_ip] => 203.111.222.182
             //     [last_login] => 2016-01-15T01:00:59.553Z
             //     [logins_count] => 20
@@ -155,8 +157,11 @@ class Controller extends GenericOauth2TypeController
                 // User was authenticated via Auth0 successfully...
                 $user = $this->registerOrLoginUser($this->user);
                 // d($user);
+                
                 // Do final login steps and redirect user to home screen
+                // Call the necessary functions in AuthenticationTypeController and the login page controller
                 $this->completeAuthentication($user);
+                
             } else { 
                 // TODO: Send an email to Yump team indicating a problem
                 // Redirect back to login page with the following message
@@ -194,13 +199,14 @@ class Controller extends GenericOauth2TypeController
         // Does this user exist (based on their email address)
         $userId = \Database::connection()->fetchColumn('SELECT uID FROM Users WHERE uEmail=?', [$auth0User['email']]);        
         if ($userId) {
+            // Log them in, then return
             $user = \User::loginByUserID($userId);
             if ($user && !$user->isError()) {
                 return $user;
             }
         }
         
-        // Create them if they do not exist currently
+        // Otherwise, create them if they do not exist currently
         // Return logged in user object
         // This function is in GenericOAuthTypeController, and uses the functions
         // below to retreive the user's data
@@ -210,13 +216,15 @@ class Controller extends GenericOauth2TypeController
     }
     
     //---------------- Functions for returning user's details ------------------
-    public function supportsFirstName() { return false; }
-    public function supportsLastName() { return false; }
+    public function supportsFirstName() { return true; }
+    public function supportsLastName() { return true; }
     public function supportsFullName() { return true; }
     public function supportsUsername() { return true; }
     public function supportsVerifiedEmail() { return false; }
     public function supportsEmail() { return true; }
     public function getEmail() { return $this->user['email']; }
+    public function getFirstName() { return $this->user['given_name']; }
+    public function getLastName() { return $this->user['family_name']; }
     public function getFullName() { return $this->user['name']; }
     public function getUsername() { return $this->user['nickname']; }
     public function getUniqueId() { return $this->user['user_id']; }
