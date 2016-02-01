@@ -24,6 +24,14 @@ Provides extra user authentication options for Concrete5 CMS via Auth0.com (in b
 
 This is not fully complete and could use more testing and other improvements, but appears to work OK so far. Contributions welcome via the normal Github pull request system.
 
+### Known issues
+
+The main known issue at the moment is that (sometimes?) when a user first logs in and is added to concrete5, they do not receive the permissions of their group until logging out and logging back in. There might be some code to be added later that can flush the permissions somehow.
+
+### Contact
+
 Contact @SimoEast on Twitter
 
-This code (excluding the 'vendor' folder) is copyright and published for research purposes only until released under an Open Source licence.
+### Licence
+
+This code (excluding the 'vendor' folder) is copyright and published for research purposes only until a future release under an Open Source licence.
